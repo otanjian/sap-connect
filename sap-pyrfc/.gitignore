@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+lib/nwrfcsdk/
+.env.local-sdk
+.build/
+*.log
+*.trc
+dev_rfc.trc

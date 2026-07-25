@@ -1,0 +1,1449 @@
+[
+  {
+    "name": "adt_search",
+    "description": "Search the ABAP repository for objects by name pattern. Use wildcards (*). Returns object URIs needed for all other operations.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "max_results": {
+          "description": "Maximum number of results (default: 100)",
+          "type": "integer"
+        },
+        "object_type": {
+          "description": "Filter by type: CLAS, PROG, TABL, INTF, FUGR",
+          "type": "string"
+        },
+        "query": {
+          "description": "Search pattern with wildcards (e.g., ZCL_*)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  {
+    "name": "adt_read_object",
+    "description": "Read metadata and structure of an ABAP object. Returns name, type, source URIs, includes, and version info.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "description": "Object URI (e.g., /sap/bc/adt/oo/classes/zcl_example)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    }
+  },
+  {
+    "name": "adt_read_source",
+    "description": "Read the source code of an ABAP object. Returns plain text source.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "description": "Source URI (e.g., /sap/bc/adt/oo/classes/zcl_test/source/main)",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: 'active' (default) or 'inactive'",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    }
+  },
+  {
+    "name": "adt_check_syntax",
+    "description": "Run a syntax check on an ABAP source object. Returns errors and warnings with line numbers.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "description": "Source URI to check",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    }
+  },
+  {
+    "name": "adt_run_tests",
+    "description": "Run ABAP Unit tests for an object or package. Returns structured pass/fail results with assertion messages. The primary feedback loop for code changes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "description": "Object or package URI",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    }
+  },
+  {
+    "name": "adt_run_class",
+    "description": "Execute an ABAP class that implements IF_OO_ADT_CLASSRUN. Returns the console output as plain text. Useful for running data generators and console utilities without Eclipse. Example: /DMO/CL_FLIGHT_DATA_GENERATOR.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "class_name": {
+          "description": "ABAP class name (e.g. /DMO/CL_FLIGHT_DATA_GENERATOR) or full ADT URI",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class_name"
+      ]
+    }
+  },
+  {
+    "name": "adt_run_atc",
+    "description": "Run ABAP Test Cockpit quality checks. Returns findings with severity and line numbers.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "check_variant": {
+          "description": "ATC check variant (default: DEFAULT)",
+          "type": "string"
+        },
+        "uri": {
+          "description": "Object or package URI",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    }
+  },
+  {
+    "name": "adt_list_transports",
+    "description": "List transport requests for a user. Returns transport numbers, descriptions, and status.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "description": "SAP username (default: DEVELOPER)",
+          "type": "string"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "adt_read_table",
+    "description": "Get a database table definition including fields, types, and key info.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "table_name": {
+          "description": "Table name (e.g., SFLIGHT)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "table_name"
+      ]
+    }
+  },
+  {
+    "name": "adt_read_cds",
+    "description": "Read the source code of a CDS view definition.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "cds_name": {
+          "description": "CDS view name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cds_name"
+      ]
+    }
+  },
+  {
+    "name": "adt_list_package",
+    "description": "List objects inside a package (non-recursive, one level).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "package_name": {
+          "description": "Package name (e.g., ZTEST)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "package_name"
+      ]
+    }
+  },
+  {
+    "name": "adt_package_tree",
+    "description": "Recursively list all objects in a package hierarchy. Use this for exhaustive enumeration when search maxResults is not sufficient.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "max_depth": {
+          "description": "Maximum recursion depth (default: 50)",
+          "type": "integer"
+        },
+        "root_package": {
+          "description": "Root package name",
+          "type": "string"
+        },
+        "type_filter": {
+          "description": "Filter by object type: CLAS, PROG, TABL",
+          "type": "string"
+        }
+      },
+      "required": [
+        "root_package"
+      ]
+    }
+  },
+  {
+    "name": "adt_package_exists",
+    "description": "Check if a package exists in the ABAP system.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "package_name": {
+          "description": "Package name (e.g., ZTEST)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "package_name"
+      ]
+    }
+  },
+  {
+    "name": "adt_discover",
+    "description": "Discover available ADT services and capabilities grouped by workspace. Returns workspace-grouped service list and feature flags (abapGit, packages, activation).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "workspace": {
+          "description": "Filter by workspace name (e.g., \"Sources\")",
+          "type": "string"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "adt_lock",
+    "description": "Lock an ABAP object for editing. Returns a lock handle. The session becomes stateful. Call adt_unlock when done.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "description": "Object URI to lock",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    }
+  },
+  {
+    "name": "adt_unlock",
+    "description": "Unlock a previously locked ABAP object.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "lock_handle": {
+          "description": "Lock handle from adt_lock",
+          "type": "string"
+        },
+        "uri": {
+          "description": "Object URI to unlock",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "lock_handle"
+      ]
+    }
+  },
+  {
+    "name": "adt_write_source",
+    "description": "Write source code to an ABAP object. Automatically handles lock/unlock cycle unless lock_handle is provided. Provide complete source, not a diff.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "lock_handle": {
+          "description": "Lock handle (skips auto-lock if provided)",
+          "type": "string"
+        },
+        "source": {
+          "description": "Complete ABAP source code to write",
+          "type": "string"
+        },
+        "transport": {
+          "description": "Transport request number",
+          "type": "string"
+        },
+        "uri": {
+          "description": "Source URI (e.g., /sap/bc/adt/oo/classes/zcl_test/source/main)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "source"
+      ]
+    }
+  },
+  {
+    "name": "adt_create_object",
+    "description": "Create a new ABAP object (class, program, etc.).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "Object description",
+          "type": "string"
+        },
+        "name": {
+          "description": "Object name (e.g., ZCL_MY_CLASS)",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type (e.g., CLAS/OC, PROG/P)",
+          "type": "string"
+        },
+        "package_name": {
+          "description": "Target package",
+          "type": "string"
+        },
+        "transport": {
+          "description": "Transport request number",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "name",
+        "package_name"
+      ]
+    }
+  },
+  {
+    "name": "adt_delete_object",
+    "description": "Delete an ABAP object. Automatically handles lock/unlock unless lock_handle is provided.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "lock_handle": {
+          "description": "Lock handle (skips auto-lock if provided)",
+          "type": "string"
+        },
+        "transport": {
+          "description": "Transport request number",
+          "type": "string"
+        },
+        "uri": {
+          "description": "Object URI to delete",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    }
+  },
+  {
+    "name": "adt_create_transport",
+    "description": "Create a new transport request.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "Transport description",
+          "type": "string"
+        },
+        "target_package": {
+          "description": "Target package",
+          "type": "string"
+        }
+      },
+      "required": [
+        "description",
+        "target_package"
+      ]
+    }
+  },
+  {
+    "name": "adt_release_transport",
+    "description": "Release a transport request for import.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "transport_number": {
+          "description": "Transport number (e.g., NPLK900001)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "transport_number"
+      ]
+    }
+  },
+  {
+    "name": "adt_activate",
+    "description": "Activate an inactive ABAP object after writing source code. Optionally provide type and name for more reliable activation.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Object name (e.g., ZCL_MY_CLASS)",
+          "type": "string"
+        },
+        "type": {
+          "description": "Object type (e.g., CLAS/OC)",
+          "type": "string"
+        },
+        "uri": {
+          "description": "Object URI (e.g., /sap/bc/adt/oo/classes/ZCL_MY_CLASS)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    }
+  },
+  {
+    "name": "bw_discover",
+    "description": "List available BW Modeling services. Returns scheme/term pairs and URIs for all BW endpoints the system supports.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_search",
+    "description": "Search the BW repository for modeling objects (ADSO, IOBJ, HCPR, TRFN, etc.). Use wildcards (*). Returns object names, types, statuses, and URIs.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "changed_by": {
+          "description": "Filter by last changed user",
+          "type": "string"
+        },
+        "changed_on_from": {
+          "description": "Changed on or after date",
+          "type": "string"
+        },
+        "changed_on_to": {
+          "description": "Changed on or before date",
+          "type": "string"
+        },
+        "created_by": {
+          "description": "Filter by creator",
+          "type": "string"
+        },
+        "created_on_from": {
+          "description": "Created on or after date",
+          "type": "string"
+        },
+        "created_on_to": {
+          "description": "Created on or before date",
+          "type": "string"
+        },
+        "depends_on_name": {
+          "description": "Filter by dependency object name",
+          "type": "string"
+        },
+        "depends_on_type": {
+          "description": "Filter by dependency object type",
+          "type": "string"
+        },
+        "max_results": {
+          "description": "Maximum results (default: 100)",
+          "type": "integer"
+        },
+        "object_sub_type": {
+          "description": "Filter by subtype (e.g., REP, SOB, RKF)",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Filter by type: ADSO, HCPR, IOBJ, TRFN, DTPA, RSDS",
+          "type": "string"
+        },
+        "query": {
+          "description": "Search pattern with wildcards (e.g., Z*, *SALES*)",
+          "type": "string"
+        },
+        "search_in_description": {
+          "description": "Also search in descriptions",
+          "type": "boolean"
+        },
+        "status": {
+          "description": "Filter by status: ACT, INA, OFF",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  {
+    "name": "bw_read_object",
+    "description": "Read a BW object definition. Returns metadata including name, type, description, status, package. Use version='m' for inactive version. Pass uri (from bw_search results) to read objects whose type doesn't map directly to a REST path segment.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type code (ADSO, IOBJ, TRFN, etc.). Used for content negotiation.",
+          "type": "string"
+        },
+        "uri": {
+          "description": "Direct URI from search results (overrides type/name path construction)",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: a (active, default), m (modified), d (delivery)",
+          "type": "string"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "bw_create_object",
+    "description": "Create a BW object. Depending on object type you may provide copy-from parameters or XML content.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "description": "Optional XML payload",
+          "type": "string"
+        },
+        "copy_from_name": {
+          "description": "Copy source object name",
+          "type": "string"
+        },
+        "copy_from_type": {
+          "description": "Copy source object type",
+          "type": "string"
+        },
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type (ADSO, IOBJ, etc.)",
+          "type": "string"
+        },
+        "package_name": {
+          "description": "Package name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name"
+      ]
+    }
+  },
+  {
+    "name": "bw_lock_object",
+    "description": "Lock a BW object for editing. Returns lock handle and transport info. Requires stateful session.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "activity": {
+          "description": "Activity: CHAN (default), DELE, MAIN",
+          "type": "string"
+        },
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type (ADSO, IOBJ, etc.)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name"
+      ]
+    }
+  },
+  {
+    "name": "bw_unlock_object",
+    "description": "Release a lock on a BW object.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name"
+      ]
+    }
+  },
+  {
+    "name": "bw_save_object",
+    "description": "Save a modified BW object. Requires prior lock.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "description": "Modified XML content",
+          "type": "string"
+        },
+        "lock_handle": {
+          "description": "Lock handle from bw_lock_object",
+          "type": "string"
+        },
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type",
+          "type": "string"
+        },
+        "transport": {
+          "description": "Transport request number",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name",
+        "content",
+        "lock_handle"
+      ]
+    }
+  },
+  {
+    "name": "bw_delete_object",
+    "description": "Delete a BW object. Requires lock handle.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "lock_handle": {
+          "description": "Lock handle",
+          "type": "string"
+        },
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type",
+          "type": "string"
+        },
+        "transport": {
+          "description": "Transport request number",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name",
+        "lock_handle"
+      ]
+    }
+  },
+  {
+    "name": "bw_activate",
+    "description": "Activate BW objects. Supports validate (pre-check), simulate (dry run), and background modes. Can activate multiple objects at once.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "force": {
+          "description": "Force activation with warnings",
+          "type": "boolean"
+        },
+        "mode": {
+          "description": "Mode: activate (default), validate, simulate, background",
+          "type": "string"
+        },
+        "objects": {
+          "description": "List of objects to activate",
+          "items": {
+            "properties": {
+              "name": {
+                "description": "Object name",
+                "type": "string"
+              },
+              "type": {
+                "description": "Object type",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "transport": {
+          "description": "Transport request number",
+          "type": "string"
+        }
+      },
+      "required": [
+        "objects"
+      ]
+    }
+  },
+  {
+    "name": "bw_transport_check",
+    "description": "Check BW transport state. Shows changeability, transport requests, and object lock states.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "own_only": {
+          "description": "Show only own transport requests",
+          "type": "boolean"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "bw_transport_write",
+    "description": "Write a BW object to a transport request.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type",
+          "type": "string"
+        },
+        "package": {
+          "description": "Package name",
+          "type": "string"
+        },
+        "transport": {
+          "description": "Transport request number",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name",
+        "transport"
+      ]
+    }
+  },
+  {
+    "name": "bw_job_status",
+    "description": "Get status of a BW background job. Status values: N (new), R (running), E (error), W (warning), S (success).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "job_guid": {
+          "description": "25-character job GUID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_guid"
+      ]
+    }
+  },
+  {
+    "name": "bw_job_restart",
+    "description": "Restart a failed BW background job. Job must be in error state (status E).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "job_guid": {
+          "description": "25-character job GUID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_guid"
+      ]
+    }
+  },
+  {
+    "name": "bw_job_cleanup",
+    "description": "Cleanup resources of a completed or failed BW background job. Removes temporary data, logs, and artifacts.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "job_guid": {
+          "description": "25-character job GUID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "job_guid"
+      ]
+    }
+  },
+  {
+    "name": "bw_list_locks",
+    "description": "List active BW object locks. Shows who has locked which objects. Useful for diagnosing lock conflicts.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "max_results": {
+          "description": "Maximum results (default: 100)",
+          "type": "integer"
+        },
+        "search": {
+          "description": "Search pattern for object names",
+          "type": "string"
+        },
+        "user": {
+          "description": "Filter by lock owner user",
+          "type": "string"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "bw_delete_lock",
+    "description": "Delete a stuck BW object lock (admin operation). Use values from bw_list_locks output to identify the lock to delete.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "arg": {
+          "description": "Base64-encoded argument from lock entry",
+          "type": "string"
+        },
+        "lock_mode": {
+          "description": "Lock mode (default: E)",
+          "type": "string"
+        },
+        "owner1": {
+          "description": "Base64-encoded owner1 from lock entry",
+          "type": "string"
+        },
+        "owner2": {
+          "description": "Base64-encoded owner2 from lock entry",
+          "type": "string"
+        },
+        "scope": {
+          "description": "Lock scope (default: 1)",
+          "type": "string"
+        },
+        "table_name": {
+          "description": "Table name from lock entry (e.g., RSBWOBJ_ENQUEUE)",
+          "type": "string"
+        },
+        "user": {
+          "description": "Lock owner user",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user",
+        "table_name",
+        "arg"
+      ]
+    }
+  },
+  {
+    "name": "bw_dbinfo",
+    "description": "Get HANA database connection info (host, port, schema, database type).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_sysinfo",
+    "description": "Get BW system properties (system configuration key-value pairs).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_changeability",
+    "description": "Get per-TLOGO changeability and transport settings. Shows which BW object types can be modified and whether they require transport requests.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_adturi",
+    "description": "Get BW-to-ADT URI mappings. Shows how BW modeling URIs map to standard ADT URIs for cross-navigation.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_xref",
+    "description": "Get cross-references (dependencies) for a BW object. Shows which objects use or are used by the specified object. Useful for impact analysis and data lineage exploration.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "associated_object_type": {
+          "description": "Filter by related type (IOBJ, ADSO, etc.)",
+          "type": "string"
+        },
+        "association": {
+          "description": "Filter by association code (001=Used by, 002=Uses, 003=Depends on)",
+          "type": "string"
+        },
+        "max_results": {
+          "description": "Maximum number of results to return",
+          "type": "integer"
+        },
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type (ADSO, IOBJ, TRFN, DTPA, etc.)",
+          "type": "string"
+        },
+        "object_version": {
+          "description": "Version: A (active), M (modified)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name"
+      ]
+    }
+  },
+  {
+    "name": "bw_nodes",
+    "description": "Get child node structure of a BW object. Lists component objects (transformations, DTPs, etc.) belonging to the specified object.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "child_name": {
+          "description": "Filter by child name",
+          "type": "string"
+        },
+        "child_type": {
+          "description": "Filter by child type",
+          "type": "string"
+        },
+        "datasource": {
+          "description": "Use DataSource structure path",
+          "type": "boolean"
+        },
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type (ADSO, IOBJ, etc.)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name"
+      ]
+    }
+  },
+  {
+    "name": "bw_search_metadata",
+    "description": "Get BW search metadata definitions (filters, fields, and search domains).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_list_favorites",
+    "description": "List BW backend favorites entries.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_clear_favorites",
+    "description": "Delete all BW backend favorites.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_nodepath",
+    "description": "Resolve the repository node path for a BW object URI.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "object_uri": {
+          "description": "BW object URI (for example /sap/bw/modeling/adso/ZSALES/a)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_uri"
+      ]
+    }
+  },
+  {
+    "name": "bw_application_log",
+    "description": "Query BW repository application log entries.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "end_timestamp": {
+          "description": "Filter end timestamp",
+          "type": "string"
+        },
+        "start_timestamp": {
+          "description": "Filter start timestamp",
+          "type": "string"
+        },
+        "username": {
+          "description": "Filter by username",
+          "type": "string"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "bw_message_text",
+    "description": "Resolve formatted BW message text for a message identifier and text type.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "description": "Message identifier",
+          "type": "string"
+        },
+        "msgv1": {
+          "description": "Message variable 1",
+          "type": "string"
+        },
+        "msgv2": {
+          "description": "Message variable 2",
+          "type": "string"
+        },
+        "msgv3": {
+          "description": "Message variable 3",
+          "type": "string"
+        },
+        "msgv4": {
+          "description": "Message variable 4",
+          "type": "string"
+        },
+        "text_type": {
+          "description": "Text type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "identifier",
+        "text_type"
+      ]
+    }
+  },
+  {
+    "name": "bw_validate",
+    "description": "Run BW validation endpoint for an object.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "description": "Validation action (default: validate)",
+          "type": "string"
+        },
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name"
+      ]
+    }
+  },
+  {
+    "name": "bw_move_requests",
+    "description": "List BW move request entries.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_valuehelp",
+    "description": "Read BW value-help endpoints under /sap/bw/modeling/is/values/*.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "description": "Value-help domain (for example infoareas, infoobject)",
+          "type": "string"
+        },
+        "infoprovider": {
+          "description": "InfoProvider filter",
+          "type": "string"
+        },
+        "max_rows": {
+          "description": "Maximum rows",
+          "type": "integer"
+        },
+        "object_type": {
+          "description": "Object type filter",
+          "type": "string"
+        },
+        "pattern": {
+          "description": "Pattern filter",
+          "type": "string"
+        },
+        "query": {
+          "description": "Raw query string k=v&k2=v2",
+          "type": "string"
+        }
+      },
+      "required": [
+        "domain"
+      ]
+    }
+  },
+  {
+    "name": "bw_virtualfolders",
+    "description": "Read BW virtual folders endpoint when available.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "object_type": {
+          "description": "Object type filter",
+          "type": "string"
+        },
+        "package_name": {
+          "description": "Package filter",
+          "type": "string"
+        },
+        "user_name": {
+          "description": "User filter",
+          "type": "string"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "bw_datavolumes",
+    "description": "Read BW data volumes endpoint when available.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "infoprovider": {
+          "description": "InfoProvider filter",
+          "type": "string"
+        },
+        "max_rows": {
+          "description": "Maximum rows",
+          "type": "integer"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "bw_reporting",
+    "description": "Run BW reporting metadata request (BICS reporting endpoint).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "compact_mode": {
+          "description": "CompactMode header",
+          "type": "boolean"
+        },
+        "compid": {
+          "description": "Query/component id",
+          "type": "string"
+        },
+        "dbgmode": {
+          "description": "Set dbgmode=true",
+          "type": "boolean"
+        },
+        "from_row": {
+          "description": "FromRow header",
+          "type": "integer"
+        },
+        "incl_except_def": {
+          "description": "InclExceptDef header",
+          "type": "boolean"
+        },
+        "incl_metadata": {
+          "description": "InclMetadata header",
+          "type": "boolean"
+        },
+        "incl_object_values": {
+          "description": "InclObjectValues header",
+          "type": "boolean"
+        },
+        "metadata_only": {
+          "description": "MetadataOnly header",
+          "type": "boolean"
+        },
+        "to_row": {
+          "description": "ToRow header",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "compid"
+      ]
+    }
+  },
+  {
+    "name": "bw_query_properties",
+    "description": "Read BW query properties rules endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "bw_transport_collect",
+    "description": "Collect dependent objects for transport. Gathers objects related to the specified object with dataflow grouping. Mode: 000=necessary, 001=complete, 003=dataflow above, 004=dataflow below.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "description": "Collection mode: 000 (necessary), 001 (complete), 003 (above), 004 (below)",
+          "type": "string"
+        },
+        "object_name": {
+          "description": "Object name",
+          "type": "string"
+        },
+        "object_type": {
+          "description": "Object type (ADSO, IOBJ, etc.)",
+          "type": "string"
+        },
+        "transport": {
+          "description": "Transport request number (optional)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_name"
+      ]
+    }
+  },
+  {
+    "name": "bw_read_transformation",
+    "description": "Read a BW transformation (TRFN) with parsed field mappings. Returns source/target objects, source and target field lists, and transformation rules (field-to-field mappings with rule types like StepDirect, StepFormula).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Transformation name",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: a (active, default), m (modified)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    }
+  },
+  {
+    "name": "bw_read_adso",
+    "description": "Read a BW Advanced DataStore Object (ADSO) with parsed field list. Returns metadata and all fields with data types, lengths, and key flags.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "ADSO name",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: a (active, default), m (modified)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    }
+  },
+  {
+    "name": "bw_read_dtp",
+    "description": "Read a BW Data Transfer Process (DTP) with parsed source/target. Returns source and target object names, types, and source system info.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "DTP name",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: a (active, default), m (modified)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    }
+  },
+  {
+    "name": "bw_read_rsds",
+    "description": "Read a BW DataSource (RSDS) with parsed segments and fields.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "DataSource name",
+          "type": "string"
+        },
+        "source_system": {
+          "description": "Source system/logsys",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: a (default), m, d",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "source_system"
+      ]
+    }
+  },
+  {
+    "name": "bw_read_query_component",
+    "description": "Read query-family BW components (QUERY/VARIABLE/RKF/CKF/FILTER/STRUCTURE) with structured references.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "component_type": {
+          "description": "Component type: query|variable|rkf|ckf|filter|structure",
+          "type": "string"
+        },
+        "name": {
+          "description": "Component name",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: a (default), m, d",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component_type",
+        "name"
+      ]
+    }
+  },
+  {
+    "name": "bw_read_dataflow",
+    "description": "Read BW DataFlow (DMOD) topology with nodes and connections.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "DMOD name",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: a (default), m, d",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    }
+  },
+  {
+    "name": "bw_lineage_graph",
+    "description": "Build canonical BW lineage graph from a DTP root. Produces nodes, edges, provenance, and warnings for data catalog ingestion.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "dtp_name": {
+          "description": "DTP name (lineage root)",
+          "type": "string"
+        },
+        "include_xref": {
+          "description": "Include xref expansion (default true)",
+          "type": "boolean"
+        },
+        "max_xref": {
+          "description": "Maximum xref neighbors",
+          "type": "integer"
+        },
+        "trfn_name": {
+          "description": "Optional explicit TRFN name",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version: a (default), m, d",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dtp_name"
+      ]
+    }
+  }
+]

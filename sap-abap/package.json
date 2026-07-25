@@ -1,0 +1,16 @@
+{
+  "name": "sap-abap-mcp-gateway",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Multi-user SAP ADT MCP gateway (sap_connect + connection_id) for BuildingAI",
+  "type": "module",
+  "scripts": {
+    "start": "./start.sh",
+    "test": "node --test src/*.test.mjs src/*.cross-session.test.mjs",
+    "discover-tools": "node scripts/discover-tools.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "supergateway": "^3.4.3"
+  }
+}

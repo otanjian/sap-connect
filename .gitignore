@@ -1,0 +1,15 @@
+.DS_Store
+.env
+.adt.creds
+.cursor/
+.run/
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+*.log
+*.trc
+dev_rfc.trc
+lib/nwrfcsdk/
+.env.local-sdk
+.build/

@@ -1,0 +1,6 @@
+.adt.creds
+.env
+.cursor/mcp.json
+.run/
+node_modules/
+*.log

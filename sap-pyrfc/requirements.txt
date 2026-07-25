@@ -1,0 +1,4 @@
+mcp>=1.2.0
+uvicorn>=0.30.0
+# Install after SAP NW RFC SDK is available (see install-nwrfcsdk.sh):
+# pyrfc>=3.3.1
